@@ -50,12 +50,12 @@ class OrderViewSet(
     def perform_create(self, serializer):  # initializing the owner of the order
         serializer.save(owner=self.request.user)
 
-    def get_queryset(self):
-        if self.request.user.is_superuser:
+    def get_queryset(self): #custom query_set function
+        if self.request.user.is_superuser: #if the user is admin it returns all Orders
             return Order.objects.all()
         else:
             Orders = []
-            for order in Order.objects.all():
+            for order in Order.objects.all(): #else return the user's orders
                 if order.owner == self.request.user:
                     Orders.append(order)
             return Orders
