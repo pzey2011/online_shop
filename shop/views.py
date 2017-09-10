@@ -1,37 +1,44 @@
-from django.shortcuts import render
+from rest_framework.permissions import IsAuthenticated
 from .models import Item, Group, Order
 from django.contrib.auth.models import User
 from .serializers import ItemSerializer, UserSerializer, OrderSerializer, GroupSerializer
 from rest_framework import viewsets
 from django.shortcuts import get_object_or_404
+from .permissions import IsOwnerOrAdmin
 
 
-class ItemViewSet(viewsets.ModelViewSet):
+class ItemViewSet(
+    viewsets.ModelViewSet):  # Quering Item from Database and Set which Serializer Shows this ViewSet and responses to Api
     queryset = Item.objects.all()
     serializer_class = ItemSerializer
 
 
-class GroupItemViewSet(viewsets.ModelViewSet):
+class GroupItemViewSet(
+    viewsets.ModelViewSet):  # Quering Items from Special Group from Database and Set which Serializer Shows this ViewSet and responses to Api
     serializer_class = ItemSerializer
 
-    def get_queryset(self):
+    def get_queryset(self):  # Filter Items object with Special Group Id with pk parameter from Url
         PK = self.kwargs['pk']
         return get_object_or_404(Group, pk=PK).item_set.all()
 
 
-class UserViewSet(viewsets.ReadOnlyModelViewSet):
+class UserViewSet(
+    viewsets.ReadOnlyModelViewSet):  # Quering User form Database and Set which Serializer Shows this ViewSet and responses to Api
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
 
-class GroupViewSet(viewsets.ModelViewSet):
+class GroupViewSet(
+    viewsets.ModelViewSet):  # Quering Group form Database and Set which Serializer Shows this ViewSet and responses to Api
     queryset = Group.objects.all()
     serializer_class = GroupSerializer
 
 
-class OrderViewSet(viewsets.ModelViewSet):
+class OrderViewSet(
+    viewsets.ModelViewSet):  # Quering Order form Database and Set which Serializer Shows this ViewSet and responses to Api
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
+    permission_classes = {IsAuthenticated, IsOwnerOrAdmin, }
 
-    def perform_create(self, serializer):
+    def perform_create(self, serializer):  # initializing the owner of the order
         serializer.save(owner=self.request.user)
