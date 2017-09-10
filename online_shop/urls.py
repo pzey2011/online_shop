@@ -22,6 +22,6 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^', include('shop.urls')),
     url(r'^api-auth/', include('rest_framework.urls',
-                               namespace='rest_framework')),
+                               namespace='rest_framework')),#user login and logout urls
 ]
 

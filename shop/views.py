@@ -43,9 +43,19 @@ class GroupViewSet(
 
 class OrderViewSet(
     viewsets.ModelViewSet):  # Quering Order form Database and Set which Serializer Shows this ViewSet and responses to Api
-    queryset = Order.objects.all()
+
     serializer_class = OrderSerializer
     permission_classes = {IsAuthenticated, IsOwnerOrAdmin, }
 
     def perform_create(self, serializer):  # initializing the owner of the order
         serializer.save(owner=self.request.user)
+
+    def get_queryset(self):
+        if self.request.user.is_superuser:
+            return Order.objects.all()
+        else:
+            Orders = []
+            for order in Order.objects.all():
+                if order.owner == self.request.user:
+                    Orders.append(order)
+            return Orders

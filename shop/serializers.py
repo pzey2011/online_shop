@@ -28,7 +28,7 @@ class UserSerializer(serializers.ModelSerializer):   # Representation of an User
         model = User
         fields = ('id', 'username', 'password')
 
-    def create(self, validated_data):
+    def create(self, validated_data): #registration or user creation
         user= User.objects.create(
             username = validated_data['username']
         )
