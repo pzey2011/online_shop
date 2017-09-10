@@ -21,15 +21,20 @@ class GroupSerializer(serializers.ModelSerializer):  # Representation of a Group
 
 class UserSerializer(serializers.ModelSerializer):   # Representation of an User in Response of a Rest Call
 
-    orders = serializers.PrimaryKeyRelatedField(many=True, queryset=Order.objects.all())
+    #orders = serializers.PrimaryKeyRelatedField(many=True, queryset=Order.objects.all())
     password = serializers.CharField(write_only=True)
 
     class Meta:
         model = User
-        fields = ('id', 'username', 'orders')
+        fields = ('id', 'username', 'password')
 
     def create(self, validated_data):
-        user = get_user_model()
+        user= User.objects.create(
+            username = validated_data['username']
+        )
+        user.set_password(validated_data['password'])
+        user.save()
+        return user
 
 
 class OrderSerializer(serializers.ModelSerializer):   # Representation of a Order in Response of a Rest Call

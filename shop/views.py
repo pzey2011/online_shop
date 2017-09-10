@@ -1,8 +1,9 @@
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated,AllowAny
 from .models import Item, Group, Order
 from django.contrib.auth.models import User
 from .serializers import ItemSerializer, UserSerializer, OrderSerializer, GroupSerializer
 from rest_framework import viewsets
+from rest_framework.generics import CreateAPIView
 from django.shortcuts import get_object_or_404
 from .permissions import IsOwnerOrAdmin
 
@@ -26,6 +27,12 @@ class UserViewSet(
     viewsets.ReadOnlyModelViewSet):  # Quering User form Database and Set which Serializer Shows this ViewSet and responses to Api
     queryset = User.objects.all()
     serializer_class = UserSerializer
+
+class CreateUserViewSet(CreateAPIView):
+    permission_classes = {AllowAny,}
+    serializer_class = UserSerializer
+
+
 
 
 class GroupViewSet(

@@ -1,5 +1,5 @@
 from django.conf.urls import url
-from .views import OrderViewSet, UserViewSet , ItemViewSet ,GroupItemViewSet, GroupViewSet
+from .views import OrderViewSet, UserViewSet , ItemViewSet ,GroupItemViewSet, GroupViewSet, CreateUserViewSet
 from rest_framework.urlpatterns import format_suffix_patterns
 from rest_framework import renderers
 
@@ -33,6 +33,7 @@ user_list = UserViewSet.as_view({
 user_detail = UserViewSet.as_view({
     'get': 'retrieve'
 })
+
 urlpatterns = format_suffix_patterns([
     url(r'^orders/$', order_list, name='order-list'),
     url(r'^orders/(?P<pk>[0-9]+)/$', order_detail, name='order-detail'),
@@ -40,5 +41,7 @@ urlpatterns = format_suffix_patterns([
     url(r'^groups/$', group_list, name='group-list'),
     url(r'^groups/(?P<pk>[0-9]+)/items/$', group_item_list, name='group-item-list'),
     url(r'^users/$', user_list, name='user-list'),
-    url(r'^users/(?P<pk>[0-9]+)/$', user_detail, name='user-detail')
+    url(r'^users/(?P<pk>[0-9]+)/$', user_detail, name='user-detail'),
+    url(r'^register/$', CreateUserViewSet.as_view(), name='register'),
+
 ])
