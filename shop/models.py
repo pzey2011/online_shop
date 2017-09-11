@@ -20,8 +20,12 @@ class Item(models.Model):
     group = models.ForeignKey(Group)
     price = models.PositiveIntegerField(default=0, validators=[validate_stock])
     comment = models.TextField(max_length=500)
-    image = models.ImageField(upload_to="static/images", default="static/images/avatar.jpg")
+    image = models.ImageField(upload_to="media/images", default="media/images/avatar.jpg")
     stock = models.PositiveIntegerField(default=0)
+
+    class Meta:
+        verbose_name = "Product"
+        verbose_name_plural = "Products"
 
     def __str__(self):
         return self.title
