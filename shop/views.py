@@ -1,4 +1,5 @@
 from rest_framework.permissions import IsAuthenticated, AllowAny
+from rest_framework.authentication import SessionAuthentication, BasicAuthentication
 from .models import Item, Group, Order
 from django.contrib.auth.models import User
 from .serializers import ItemSerializer, UserSerializer, OrderSerializer, GroupSerializer
@@ -57,7 +58,6 @@ class GroupViewSet(
 
 class OrderViewSet(
     viewsets.ModelViewSet):  # Quering Order form Database and Set which Serializer Shows this ViewSet and responses to Api
-
     serializer_class = OrderSerializer
     permission_classes = {IsAuthenticated, }
 

@@ -18,6 +18,7 @@ from django.conf.urls import url , include
 from django.conf.urls.static import static
 from django.contrib import admin
 from rest_framework.schemas import get_schema_view
+from rest_framework.authtoken import views
 
 schema_view = get_schema_view(title="List of APIs")
 
@@ -30,3 +31,7 @@ urlpatterns = [
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+urlpatterns += [
+    url(r'^api-token-auth/', views.obtain_auth_token)
+]
