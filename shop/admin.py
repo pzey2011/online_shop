@@ -7,6 +7,7 @@ class OrderAdmin(admin.ModelAdmin):
     readonly_fields = ('items', 'total_price', 'owner')
     search_fields = ['owner__username', 'items__title']
     list_filter = ('status' ,)
+    list_display_links = ('owner','total_price' , 'time')
 
 
 class ItemAdmin(admin.ModelAdmin):
